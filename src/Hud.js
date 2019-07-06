@@ -124,7 +124,7 @@ class Hud extends Container {
                 //select 3 elements (image + text + image, image + image + image, image + image + text, etc)
                 for (var i = 0; i < 3; i++) {
                         let randomElement = this.randomInt(0, 1); //select random element text or sprite for each of them
-
+                        console.log(randomElement);
                         if (randomElement == 0) {
                                 //select random sprites from the spritesheet
                                 options.spriteName = ((this.randomInt(0, 1) == 1 ? 'dieWhite_border' : 'dieRed_border') + this.randomInt(1, 6) + '.png');

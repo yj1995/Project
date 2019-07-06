@@ -12,15 +12,22 @@ import Card from './Card';
 const MAX_X = window.innerWidth;
 const MAX_Y = window.innerHeight;
 
+const textStyle = {
+	fontFamily: 'Arial',
+	fontSize: '30px',
+	align: 'left',
+	fill: 'white'
+};
+
 const HUD_POSITIONS = {
-	RIGHT_TOP_CORNER: new Point(MAX_X - 125, 20),
+	RIGHT_TOP_CORNER: new Point(MAX_X - 125, 12),
 	RIGHT_BOTTOM_CORNER: new Point(MAX_X - 10, MAX_Y - 20),
 	CENTER: new Point(MAX_X * 0.50, MAX_Y * 0.50),
-	CENTER_TOP: new Point(MAX_X * 0.50 - 200, 10),
+	CENTER_TOP: new Point(MAX_X * 0.50 - 150, 30),
 	TASK1_BUTTON: new Point(MAX_X * 0.50 - 125, MAX_Y * 0.35),
 	TASK2_BUTTON: new Point(MAX_X * 0.50 - 125, MAX_Y * 0.50),
 	TASK3_BUTTON: new Point(MAX_X * 0.50 - 125, MAX_Y * 0.65),
-	LEFT_TOP_CORNER: new Point(MAX_X * 0.01, 20),
+	LEFT_TOP_CORNER: new Point(MAX_X * 0.01, 30),
 	LEFT_BOTTOM_CORNER: new Point(10, MAX_Y * 0.95)
 };
 
@@ -59,11 +66,11 @@ class Stage extends Container {
 		this.selectedTask = -1;
 
 		this.hud.addText('welcome', {
-			text: 'Welcome to PixiJS Tasks of Berkan USLU',
+			text: 'Welcome to PixiJS Tasks',
 			textStyle: {
 				fontFamily: 'Arial',
-				fontSize: '18px',
-				align: 'left',
+				fontSize: '30px',
+				align: 'center',
 				fill: 'white'
 			},
 			position: HUD_POSITIONS.CENTER_TOP,
@@ -86,12 +93,7 @@ class Stage extends Container {
 
 	addFPSText() {
 		this.hud.addText('fps', {
-			textStyle: {
-				fontFamily: 'Arial',
-				fontSize: '32px',
-				align: 'left',
-				fill: 'white'
-			},
+			textStyle,
 			position: HUD_POSITIONS.LEFT_TOP_CORNER,
 			anchor: {
 				x: 0,
@@ -107,17 +109,16 @@ class Stage extends Container {
 
 	addBackToMenuButton() {
 		this.hud.addButtonContainer('returnBack', {
-			spriteName: 'dieRed6.png',
 			spritesheet: this.spritesheet,
 			position: HUD_POSITIONS.RIGHT_TOP_CORNER,
 			text: 'Back to Menu',
 			anchor: {
 				x: 0.5,
-				y: 0
+				y: 0.5
 			},
 			textStyle: {
 				fontFamily: 'Arial',
-				fontSize: '25px',
+				fontSize: '30px',
 				align: 'left',
 				fill: 'white'
 			},
@@ -146,7 +147,6 @@ class Stage extends Container {
 
 	addTaskButtons() {
 		this.hud.addButtonContainer('task1', {
-			spriteName: 'dieWhite1.png',
 			spritesheet: this.spritesheet,
 			position: HUD_POSITIONS.TASK1_BUTTON,
 			text: 'Task 1',
@@ -154,16 +154,10 @@ class Stage extends Container {
 				x: 0.5,
 				y: 0.5
 			},
-			textStyle: {
-				fontFamily: 'Arial',
-				fontSize: '25px',
-				align: 'left',
-				fill: 'black'
-			}
+			textStyle
 		}, this.onTask1ButtonDown);
 
 		this.hud.addButtonContainer('task2', {
-			spriteName: 'dieWhite2.png',
 			spritesheet: this.spritesheet,
 			position: HUD_POSITIONS.TASK2_BUTTON,
 			text: 'Task 2',
@@ -171,16 +165,10 @@ class Stage extends Container {
 				x: 0.5,
 				y: 0.5
 			},
-			textStyle: {
-				fontFamily: 'Arial',
-				fontSize: '25px',
-				align: 'left',
-				fill: 'black'
-			}
+			textStyle
 		}, this.onTask2ButtonDown);
 
 		this.hud.addButtonContainer('task3', {
-			spriteName: 'dieWhite3.png',
 			spritesheet: this.spritesheet,
 			position: HUD_POSITIONS.TASK3_BUTTON,
 			text: 'Task 3',
@@ -188,12 +176,7 @@ class Stage extends Container {
 				x: 0.5,
 				y: 0.5
 			},
-			textStyle: {
-				fontFamily: 'Arial',
-				fontSize: '25px',
-				align: 'left',
-				fill: 'black'
-			}
+			textStyle
 		}, this.onTask3ButtonDown);
 	}
 
@@ -229,15 +212,25 @@ class Stage extends Container {
 		this.cardCollection = [];
 
 		let spritePadding = 0;
+		const TotalOfCard = 144;
+		const noOfCard = 52;
+		const card = {
+			scale: 0.5,
+			intX: 150,
+			intY: 70,
+			padding: 3
+		}
+
 		//create 144 sprites and store in sprites array
-		for (var i = 0; i < 144; i++) {
+		for (var i = 0; i < TotalOfCard; i++) {
 			//there aren't 144 different images, return back to starting positions in every 53 icons
-			let index = (i > 52 ? i - 53 : i);
-			index = (index > 52 ? index - 53 : index);
+			let index = (i > noOfCard ? i - noOfCard + 1 : i);
+			index = (index > noOfCard ? index - noOfCard + 1 : index);
 
 			let sprite = new PIXI.Sprite(loader.resources[this.spritesheet].textures['card' + index + '.png']);
-			sprite.position.set(150, 50 + spritePadding);
-			spritePadding += 5; // add some padding
+			sprite.position.set(card.intX, card.intY + spritePadding);
+			sprite.scale.set(card.scale)
+			spritePadding += card.padding; // add some padding
 			this.sprites.push(sprite);
 			this.spritePositions.push(sprite.position);
 			this.addChild(sprite);
@@ -247,17 +240,17 @@ class Stage extends Container {
 	}
 
 	addSpriteToReversedArray() {
+		const cardAnimationTime = 2 * 1000;
 		if (this.sprites) {
 			if (this.sprites.length > 0) {
 				let lastSprite = this.sprites[this.sprites.length - 1];
-
 				//store last sprite from first sprite array in Card object
 				//the card object includes startPosition and expectedPosition for move animation with move duration
 				let card = new Card();
 				card.sprite = lastSprite;
 				card.startPosition = lastSprite.position;
 				card.expectedPosition = this.spritePositions[this.reversedSprites.length];
-				card.moveDuration = 2 * 1000;
+				card.moveDuration = cardAnimationTime;
 				this.cardCollection.push(card);
 
 				this.sprites.pop();
@@ -324,7 +317,7 @@ class Stage extends Container {
 
 		graphics.lineStyle(2, 0x64b0ff, 1);
 		graphics.beginFill(0x383838, 1);
-		graphics.drawRect(-1 * MAX_X * 0.35, -1 * MAX_Y * 0.4, MAX_X * 0.7, MAX_Y * 0.8);
+		graphics.drawRect(-1 * MAX_X * 0.35, -1 * MAX_Y * 0.38, MAX_X * 0.7, MAX_Y * 0.8);
 		content.addChild(graphics);
 
 		//add fire-arc fx from RevoltFX library
