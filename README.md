@@ -1,5 +1,5 @@
 # Pixi.JS Tasks
-I made some tasks for trying powerful Pixi.JS game engine with ES6, NPM, and Webpack. You can access live demo at http://www.berkanuslu.com/pixijs/
+I made some tasks for trying powerful Pixi.JS game engine with ES6, NPM, and Webpack. You can access live demo at https://yj1995.github.io/Project/
 
 ## Tasks Informations
 The test is split in 3 parts which should be accessed through an in-game menu. Performance will be checked on mobile (low/mid/high-end devices) plus desktop and should always be fullscreen.
