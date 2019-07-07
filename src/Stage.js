@@ -215,14 +215,14 @@ class Stage extends Container {
 		const TotalOfCard = 144;
 		const noOfCard = 52;
 		const card = {
-			scale: 0.5,
+			scale: 1,
 			intX: 150,
 			intY: 70,
-			padding: 3
+			padding: 2.85
 		}
 
 		//create 144 sprites and store in sprites array
-		for (var i = 0; i < TotalOfCard; i++) {
+		for (let i = 0; i < TotalOfCard; i++) {
 			//there aren't 144 different images, return back to starting positions in every 53 icons
 			let index = (i > noOfCard ? i - noOfCard + 1 : i);
 			index = (index > noOfCard ? index - noOfCard + 1 : index);
@@ -308,22 +308,29 @@ class Stage extends Container {
 	}
 
 	startTask3() {
-		var content = new PIXI.Container();
-		content.x = window.innerWidth * 0.5;
-		content.y = window.innerHeight * 0.5;
+		let rectangle = {
+			intX: -1 * MAX_X * 0.5,
+			intY: -1 * MAX_Y * 0.5,
+			width: MAX_X * 1,
+			height: MAX_Y * 1.1,
+			color: 0x383838
+		};
+		let content = new PIXI.Container();
+		content.x = MAX_X * 0.5;
+		content.y = MAX_Y * 0.5;
+		content.scale.set(0.7)
 		this.addChild(content);
 
-		var graphics = new PIXI.Graphics();
+		let graphics = new PIXI.Graphics();
 
 		graphics.lineStyle(2, 0x64b0ff, 1);
-		graphics.beginFill(0x383838, 1);
-		graphics.drawRect(-1 * MAX_X * 0.35, -1 * MAX_Y * 0.38, MAX_X * 0.7, MAX_Y * 0.8);
+		graphics.beginFill(rectangle.color, 1);
+		graphics.drawRect(rectangle.intX, rectangle.intY, rectangle.width, rectangle.height);
 		content.addChild(graphics);
 
 		//add fire-arc fx from RevoltFX library
-		//changed variables in assets/defult-bundle.json using the editor at https://editor.revoltfx.electronauts.net/
-		var emitter = this.fx.getParticleEmitter('fire-arc', true, true);
-		emitter.settings.autoRotation = false;
+		//changed letiables in assets/defult-bundle.json using the editor at https://editor.revoltfx.electronauts.net/
+		let emitter = this.fx.getParticleEmitter('fire-arc', true, true);
 		emitter.init(content);
 	}
 
